@@ -1,0 +1,6 @@
+@import url('./customMedia.css');
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
