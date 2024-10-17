@@ -1,0 +1,11 @@
+.test-title {
+  color: aqua;
+
+  @media (--sp) {
+    color: red;
+  }
+
+  @media (--tb) {
+    color: green;
+  }
+}
