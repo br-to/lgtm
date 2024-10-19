@@ -1,4 +1,5 @@
 @import url('./customMedia.css');
+@import url('./color.css');
 
 a {
   color: inherit;
