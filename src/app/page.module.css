@@ -2,5 +2,9 @@
   > .main {
     background-color: var(--gray);
     padding: 40px;
+
+    @media (--sp) {
+      padding: 40px 20px;
+    }
   }
 }
