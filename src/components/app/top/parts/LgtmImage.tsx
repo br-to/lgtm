@@ -20,6 +20,7 @@ const LgtmImage: FC<Props> = ({ url, alt }) => {
 					height: "100%",
 				}}
 				fill
+				sizes="100vw"
 			/>
 		</AspectRatio>
 	);

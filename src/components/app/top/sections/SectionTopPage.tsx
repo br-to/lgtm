@@ -1,31 +1,27 @@
+import { SUPABASE } from "@/constants/supabase";
+import { fetchImages, supabase } from "@/utils/supabase";
 import { Box, Flex, Grid, TabNav } from "@radix-ui/themes";
-import type { FC } from "react";
 import LgtmImage from "../parts/LgtmImage";
 import styles from "./SectionTopPage.module.css";
 
-const SectionTopPage: FC = () => {
-	const images = [
-		{
-			url: "https://lgtm-images.lgtmeow.com/2024/09/26/11/c4805315-3e25-4977-973c-4822e2852027.webp",
-			alt: "test1",
-		},
-		{
-			url: "https://lgtm-images.lgtmeow.com/2024/09/26/11/c4805315-3e25-4977-973c-4822e2852027.webp",
-			alt: "test1",
-		},
-		{
-			url: "https://lgtm-images.lgtmeow.com/2024/09/26/11/c4805315-3e25-4977-973c-4822e2852027.webp",
-			alt: "test1",
-		},
-		{
-			url: "https://lgtm-images.lgtmeow.com/2024/09/26/11/c4805315-3e25-4977-973c-4822e2852027.webp",
-			alt: "test1",
-		},
-		{
-			url: "https://lgtm-images.lgtmeow.com/2024/09/26/11/c4805315-3e25-4977-973c-4822e2852027.webp",
-			alt: "test1",
-		},
-	];
+const SectionTopPage = async () => {
+	const { imagesData, error } = await fetchImages();
+
+	// TODO: エラーハンドリング
+	if (error) {
+		return null;
+	}
+
+	const images =
+		(imagesData &&
+			imagesData.length > 0 &&
+			imagesData
+				.filter(({ name }) => name !== ".emptyFolderPlaceholder")
+				.map(({ name }) => ({
+					url: `${SUPABASE.IMAGE_URL}${name}`,
+					alt: name.split(".")[0],
+				}))) ||
+		undefined;
 
 	return (
 		<Box className={styles["section-top-page"]}>
