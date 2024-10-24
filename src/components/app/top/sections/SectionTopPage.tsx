@@ -1,28 +1,20 @@
-import { SUPABASE } from "@/constants/supabase";
-import { fetchImages, supabase } from "@/utils/supabase";
+"use client";
+
 import { Box, Flex, Grid, TabNav } from "@radix-ui/themes";
+import type { FC } from "react";
+import FileUpload from "../parts/FileUpload";
 import LgtmImage from "../parts/LgtmImage";
+
 import styles from "./SectionTopPage.module.css";
 
-const SectionTopPage = async () => {
-	const { imagesData, error } = await fetchImages();
+type Props = {
+	images?: {
+		url: string;
+		alt: string;
+	}[];
+};
 
-	// TODO: エラーハンドリング
-	if (error) {
-		return null;
-	}
-
-	const images =
-		(imagesData &&
-			imagesData.length > 0 &&
-			imagesData
-				.filter(({ name }) => name !== ".emptyFolderPlaceholder")
-				.map(({ name }) => ({
-					url: `${SUPABASE.IMAGE_URL}${name}`,
-					alt: name.split(".")[0],
-				}))) ||
-		undefined;
-
+const SectionTopPage: FC<Props> = ({ images }) => {
 	return (
 		<Box className={styles["section-top-page"]}>
 			<Flex justify="center">
@@ -33,6 +25,9 @@ const SectionTopPage = async () => {
 					<TabNav.Link href="#">Documents</TabNav.Link>
 					<TabNav.Link href="#">Settings</TabNav.Link>
 				</TabNav.Root>
+			</Flex>
+			<Flex justify="center" mt="6">
+				<FileUpload />
 			</Flex>
 			{images && images.length > 0 && (
 				<Grid
