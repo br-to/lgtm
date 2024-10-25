@@ -5,7 +5,9 @@ import { SUPABASE } from "@/constants/supabase";
 import { fetchImages } from "@/utils/supabase";
 import styles from "./page.module.css";
 
-const Top = async () => {
+export const revalidate = 0;
+
+const Page = async () => {
 	const { imagesData, error } = await fetchImages();
 
 	// TODO: エラーハンドリング
@@ -35,4 +37,4 @@ const Top = async () => {
 	);
 };
 
-export default Top;
+export default Page;
