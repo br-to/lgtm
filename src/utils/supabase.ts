@@ -7,10 +7,10 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
 export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey, {});
 
-// 画像の取得
+// 登録した画像一覧の取得
 export const fetchImages = async () => {
 	const { data, error } = await supabase.storage
-		.from(SUPABASE.BUCKET_NAME)
+		.from(SUPABASE.BUCKET)
 		.list(SUPABASE.DIRECTORY, {
 			limit: 100,
 			offset: 0,
@@ -26,7 +26,7 @@ export const fetchImages = async () => {
 // 画像のアップロード
 export const uploadImage = async (file: File) => {
 	const { data, error } = await supabase.storage
-		.from(SUPABASE.BUCKET_NAME)
+		.from(SUPABASE.BUCKET)
 		.upload(
 			`${SUPABASE.DIRECTORY}/${uuidv4()}.${file.name?.split(".").at(-1)}`,
 			file,
