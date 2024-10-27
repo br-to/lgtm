@@ -1,7 +1,8 @@
 "use client";
 
 import { Box, Flex, Grid, TabNav } from "@radix-ui/themes";
-import type { FC } from "react";
+import { type FC, useState } from "react";
+import FileDialog from "../parts/FileDialog";
 import FileUpload from "../parts/FileUpload";
 import LgtmImage from "../parts/LgtmImage";
 
@@ -15,18 +16,21 @@ type Props = {
 };
 
 const SectionTopPage: FC<Props> = ({ images }) => {
+	const [imageUrl, setImageUrl] = useState("");
+	const [isOpen, setIsOpen] = useState(false);
+
+	const handleClickImage = (imageUrl: string) => {
+		setImageUrl(imageUrl);
+		setIsOpen(true);
+	};
+
+	const handleCloseDialog = () => {
+		setIsOpen(false);
+	};
+
 	return (
 		<Box className={styles["section-top-page"]}>
 			<Flex justify="center">
-				<TabNav.Root>
-					<TabNav.Link href="#" active>
-						Account
-					</TabNav.Link>
-					<TabNav.Link href="#">Documents</TabNav.Link>
-					<TabNav.Link href="#">Settings</TabNav.Link>
-				</TabNav.Root>
-			</Flex>
-			<Flex justify="center" mt="6">
 				<FileUpload />
 			</Flex>
 			{images && images.length > 0 && (
@@ -40,10 +44,20 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 					mt="5"
 				>
 					{images.map(({ url, alt }) => (
-						<LgtmImage key={url} url={url} alt={alt} />
+						<LgtmImage
+							key={url}
+							url={url}
+							alt={alt}
+							onClick={() => handleClickImage(url)}
+						/>
 					))}
 				</Grid>
 			)}
+			<FileDialog
+				imageUrl={imageUrl}
+				isOpen={isOpen}
+				onClose={handleCloseDialog}
+			/>
 		</Box>
 	);
 };

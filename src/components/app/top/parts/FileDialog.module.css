@@ -1,0 +1,6 @@
+.file-dialog {
+  > .button > .close {
+    background-color: var(--gray-1);
+    color: var(--gray-12);
+  }
+}

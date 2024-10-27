@@ -1,11 +1,17 @@
 import { uploadImage } from "@/utils/supabase";
 import { Button, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
-import type { ChangeEvent, FC } from "react";
+import { type ChangeEvent, type FC, useRef } from "react";
 import styles from "./FileUpload.module.css";
 
 const FileUpload: FC = () => {
+	const inputFileRef = useRef<HTMLInputElement>(null);
+
 	const router = useRouter();
+
+	const handleButtonClick = () => {
+		inputFileRef.current?.click();
+	};
 
 	const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
 		event.preventDefault();
@@ -20,7 +26,11 @@ const FileUpload: FC = () => {
 	};
 
 	return (
-		<Button className={styles["file-upload"]}>
+		<Button
+			className={styles["file-upload"]}
+			color="teal"
+			onClick={handleButtonClick}
+		>
 			<Text>ファイルアップロード</Text>
 			<input
 				type="file"
@@ -29,6 +39,7 @@ const FileUpload: FC = () => {
 				tabIndex={-1}
 				className={styles["file"]}
 				onChange={handleFileChange}
+				ref={inputFileRef}
 			/>
 		</Button>
 	);
