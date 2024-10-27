@@ -1,5 +1,5 @@
 .file-upload {
   > .file {
-    /* display: none; */
+    display: none;
   }
 }
