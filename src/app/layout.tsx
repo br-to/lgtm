@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import "@radix-ui/themes/styles.css";
 import "@/styles/reset.css";
 import "@/styles/globals.css";
-import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import styles from "./layout.module.css";
 
