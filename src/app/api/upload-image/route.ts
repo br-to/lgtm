@@ -1,4 +1,5 @@
-import { IMAGE } from "@/constants/image";
+import fs from "node:fs";
+import path from "node:path";
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 
@@ -14,7 +15,8 @@ export const POST = async (request: Request): Promise<Response> => {
 	const uploadedImageBuffer = Buffer.from(await uploadedFile.arrayBuffer());
 
 	// public フォルダからロゴ画像を読み込み
-	const logoBuffer = await sharp(IMAGE.LOGO).toBuffer();
+	const logoPath = path.join(process.cwd(), "public", "logo.png");
+	const logoBuffer = fs.readFileSync(logoPath);
 
 	try {
 		// Sharpで画像を結合
