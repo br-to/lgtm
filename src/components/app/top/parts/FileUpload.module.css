@@ -1,4 +1,10 @@
 .file-upload {
+  width: 200px;
+
+  @media (--smartphone) {
+    width: 80%;
+  }
+
   > .file {
     display: none;
   }
