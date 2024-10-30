@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Grid, TabNav } from "@radix-ui/themes";
+import { Box, Flex, Grid, Text } from "@radix-ui/themes";
 import { type FC, useState } from "react";
 import FileDialog from "../parts/FileDialog";
 import FileUpload from "../parts/FileUpload";
@@ -33,7 +33,7 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 			<Flex justify="center">
 				<FileUpload />
 			</Flex>
-			{images && images.length > 0 && (
+			{images && images.length > 0 ? (
 				<Grid
 					columns={{
 						initial: "1",
@@ -52,6 +52,10 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 						/>
 					))}
 				</Grid>
+			) : (
+				<Flex mt="8" justify="center">
+					<Text>画像をアップロードしてください</Text>
+				</Flex>
 			)}
 			<FileDialog
 				imageUrl={imageUrl}
