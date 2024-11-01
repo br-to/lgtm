@@ -35,7 +35,7 @@ export const uploadImage = async (file: File) => {
 	});
 
 	const blob = await response.blob();
-	const mergedFile = new File([blob], `${uuidv4()}.png`, { type: "image/png" });
+	const mergedFile = new File([blob], `${uuidv4()}.png`, { type: "image/*" });
 
 	const { error } = await supabase.storage
 		.from(SUPABASE.BUCKET)
