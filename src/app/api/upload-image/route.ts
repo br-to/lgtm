@@ -24,17 +24,15 @@ export const POST = async (request: Request): Promise<Response> => {
 			.composite([
 				{
 					input: logoBuffer,
-					top: 100,
-					left: 100,
 				},
 			])
-			.png()
+			.sharpen()
 			.toBuffer();
 
 		// 画像データを返す
 		return new Response(mergedImageBuffer, {
 			headers: {
-				"Content-Type": "image/png",
+				"Content-Type": "image/*",
 			},
 		});
 	} catch (error) {
