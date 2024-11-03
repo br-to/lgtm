@@ -17,6 +17,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
+			<head>
+				<script
+					async
+					src="https://cse.google.com/cse.js?cx=03ba4cba97a1e46f5"
+				/>
+			</head>
 			<body>
 				<Theme
 					appearance="light"
