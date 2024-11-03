@@ -45,3 +45,34 @@ export const uploadImage = async (file: File) => {
 		error,
 	};
 };
+
+export const uploadSearchImage = async (url: string) => {
+	const response = await fetch(API_PATH.UPLOAD_SEARCH_IMAGE, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ url }),
+	});
+
+	const blob = await response.blob();
+	const mergedFile = new File([blob], `${uuidv4()}.png`, { type: "image/*" });
+
+	const { error } = await supabase.storage
+		.from(SUPABASE.BUCKET)
+		.upload(`${SUPABASE.DIRECTORY}/${uuidv4()}.png`, mergedFile);
+
+	return {
+		error,
+	};
+};
+
+export const searchImages = async (keyword: string) => {
+	const result = await fetch(`${API_PATH.SEARCH_IMAGES}?keyword=${keyword}`);
+
+	const data = await result.json().catch((error) => {
+		return error;
+	});
+
+	return data;
+};
