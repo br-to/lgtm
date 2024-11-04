@@ -19,6 +19,7 @@ export const GET = async (request: Request) => {
 			auth: API_KEY,
 			cx: GOOGLE_ID,
 			q: keyword,
+			num: 9,
 		});
 
 		const images = result.data.items
@@ -27,7 +28,10 @@ export const GET = async (request: Request) => {
 					? pagemap?.cse_image[0]?.src
 					: undefined,
 			)
-			.filter((value) => value) as string[];
+			.filter(
+				(value: string) =>
+					value?.startsWith("https") || value?.startsWith("http"),
+			) as string[];
 
 		return NextResponse.json({ images });
 	} catch (error) {
