@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@radix-ui/themes/styles.css";
 import "@/styles/reset.css";
 import "@/styles/globals.css";
+import { ToastProvider } from "@/provider/ToastProvider";
 import { Theme } from "@radix-ui/themes";
 import styles from "./layout.module.css";
 
@@ -32,7 +33,7 @@ export default function RootLayout({
 					scaling="100%"
 					className={styles["layout-theme"]}
 				>
-					{children}
+					<ToastProvider>{children}</ToastProvider>
 				</Theme>
 			</body>
 		</html>
