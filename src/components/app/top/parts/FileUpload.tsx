@@ -1,3 +1,4 @@
+import { useToast } from "@/hooks/useToast";
 import { uploadImage } from "@/utils/supabase";
 import { Button, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,8 @@ const FileUpload: FC = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const router = useRouter();
+
+	const openToast = useToast();
 
 	const handleButtonClick = () => {
 		inputFileRef.current?.click();
@@ -33,8 +36,12 @@ const FileUpload: FC = () => {
 		}
 
 		router.refresh();
-
 		setIsLoading(false);
+		openToast({
+			type: "success",
+			title: "LGTM画像を作成しました!",
+			duration: 3000,
+		});
 	};
 
 	return (
