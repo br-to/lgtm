@@ -1,3 +1,4 @@
+import { useToast } from "@/hooks/useToast";
 import { searchImages } from "@/utils/supabase";
 import * as Form from "@radix-ui/react-form";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
@@ -10,6 +11,8 @@ type Props = {
 };
 
 const SearchForm: FC<Props> = ({ setSearchValues }) => {
+	const openToast = useToast();
+
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
@@ -18,11 +21,16 @@ const SearchForm: FC<Props> = ({ setSearchValues }) => {
 		};
 		const result: {
 			images: string[];
+			error?: string;
 		} = await searchImages(data.search);
 
-		// TODO: エラーハンドリング
-		if (!result) {
-			return null;
+		if (result?.error) {
+			openToast({
+				type: "error",
+				title: "キーワードを入力してください。",
+				duration: 3000,
+			});
+			return;
 		}
 
 		setSearchValues(result.images);
