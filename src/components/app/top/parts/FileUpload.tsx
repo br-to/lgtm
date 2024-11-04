@@ -1,3 +1,4 @@
+import { useToast } from "@/hooks/useToast";
 import { uploadImage } from "@/utils/supabase";
 import { Button, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,8 @@ const FileUpload: FC = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const router = useRouter();
+
+	const openToast = useToast();
 
 	const handleButtonClick = () => {
 		inputFileRef.current?.click();
@@ -22,19 +25,27 @@ const FileUpload: FC = () => {
 
 		if (!file) return;
 
-		// TODO: エラーハンドリング
 		const { error } = await uploadImage(file);
 
 		if (error) {
 			setIsLoading(false);
-			alert("エラーです、アップロードできません");
+			openToast({
+				type: "error",
+				title:
+					"LGTM画像を作成できませんでした。時間をおいて再度実行してください。",
+				duration: 3000,
+			});
 
 			return;
 		}
 
 		router.refresh();
-
 		setIsLoading(false);
+		openToast({
+			type: "success",
+			title: "LGTM画像を作成しました!",
+			duration: 3000,
+		});
 	};
 
 	return (

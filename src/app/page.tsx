@@ -10,7 +10,6 @@ export const revalidate = 0;
 const Page = async () => {
 	const { imagesData, error } = await fetchImages();
 
-	// TODO: エラーハンドリング
 	if (error) {
 		return null;
 	}

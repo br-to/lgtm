@@ -1,5 +1,6 @@
 "use client";
 
+import { useToast } from "@/hooks/useToast";
 import { uploadSearchImage } from "@/utils/supabase";
 import { Box, Flex, Grid, Heading, Separator, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
@@ -8,7 +9,6 @@ import FileDialog from "../parts/FileDialog";
 import FileUpload from "../parts/FileUpload";
 import LgtmImage from "../parts/LgtmImage";
 import SearchForm from "../parts/SearchForm";
-
 import styles from "./SectionTopPage.module.css";
 
 type Props = {
@@ -25,6 +25,8 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 
 	const router = useRouter();
 
+	const openToast = useToast();
+
 	const handleClickImage = (imageUrl: string) => {
 		setImageUrl(imageUrl);
 		setIsOpen(true);
@@ -35,12 +37,15 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 	};
 
 	const handleClickSearchImage = async (url: string) => {
-		// TODO: エラーハンドリング
 		const { error } = await uploadSearchImage(url);
 
 		if (error) {
-			alert("エラーです、アップロードできません");
-
+			openToast({
+				type: "error",
+				title:
+					"LGTM画像を作成できませんでした。時間をおいて再度実行してください。",
+				duration: 3000,
+			});
 			return;
 		}
 
@@ -51,7 +56,14 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 
 	return (
 		<Box className={styles["section-top-page"]}>
-			<Flex gap="4" justify="end">
+			<Flex
+				gap="4"
+				justify="end"
+				direction={{
+					initial: "column",
+					sm: "row",
+				}}
+			>
 				<Flex justify="center">
 					<SearchForm setSearchValues={setSearchImagesData} />
 				</Flex>
