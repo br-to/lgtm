@@ -36,6 +36,8 @@ const FileDialog: FC<Props> = ({ isOpen, imageUrl, onClose }) => {
 				ref={dialogRef}
 				className={styles["file-dialog"]}
 			>
+				<Dialog.Title hidden />
+				<Dialog.Description hidden />
 				<Flex gap="3" mb="4" justify="end" className={styles["button"]}>
 					<Button className={styles["close"]} onClick={onClose}>
 						<Cross2Icon width="20" height="20" />
