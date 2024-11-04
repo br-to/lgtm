@@ -25,12 +25,16 @@ const FileUpload: FC = () => {
 
 		if (!file) return;
 
-		// TODO: エラーハンドリング
 		const { error } = await uploadImage(file);
 
 		if (error) {
 			setIsLoading(false);
-			alert("エラーです、アップロードできません");
+			openToast({
+				type: "error",
+				title:
+					"LGTM画像を作成できませんでした。時間をおいて再度実行してください。",
+				duration: 3000,
+			});
 
 			return;
 		}
