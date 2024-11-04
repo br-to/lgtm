@@ -1,13 +1,13 @@
 "use client";
 
-import { searchImages, uploadSearchImage } from "@/utils/supabase";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Box, Button, Flex, Grid, Text, TextField } from "@radix-ui/themes";
+import { uploadSearchImage } from "@/utils/supabase";
+import { Box, Flex, Grid, Heading, Separator, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import { type FC, useState } from "react";
 import FileDialog from "../parts/FileDialog";
 import FileUpload from "../parts/FileUpload";
 import LgtmImage from "../parts/LgtmImage";
+import SearchForm from "../parts/SearchForm";
 
 import styles from "./SectionTopPage.module.css";
 
@@ -20,10 +20,8 @@ type Props = {
 
 const SectionTopPage: FC<Props> = ({ images }) => {
 	const [imageUrl, setImageUrl] = useState("");
-	const [searchValue, setSearchValue] = useState("");
-	const [searchImagesData, setSearchImagesData] = useState([]);
+	const [searchImagesData, setSearchImagesData] = useState<string[]>([]);
 	const [isOpen, setIsOpen] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
 
 	const router = useRouter();
 
@@ -36,24 +34,11 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 		setIsOpen(false);
 	};
 
-	const handlSearch = async () => {
-		const result = await searchImages(searchValue);
-
-		if (!result) {
-			return null;
-		}
-
-		setSearchImagesData(result.images);
-	};
-
 	const handleClickSearchImage = async (url: string) => {
-		setIsLoading(true);
-
 		// TODO: エラーハンドリング
 		const { error } = await uploadSearchImage(url);
 
 		if (error) {
-			setIsLoading(false);
 			alert("エラーです、アップロードできません");
 
 			return;
@@ -61,53 +46,43 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 
 		router.refresh();
 
-		setIsLoading(false);
 		setSearchImagesData([]);
-		setSearchValue("");
 	};
 
 	return (
 		<Box className={styles["section-top-page"]}>
-			<Flex gap="4" direction="column">
-				<Flex justify="center" align="center" gap="4">
-					<TextField.Root
-						placeholder="キーワードで画像検索"
-						className={styles["search-input"]}
-						size="3"
-						onChange={(event) => setSearchValue(event.target.value)}
-					>
-						<TextField.Slot>
-							<MagnifyingGlassIcon height="16" width="16" />
-						</TextField.Slot>
-					</TextField.Root>
-					<Button type="submit" onClick={handlSearch}>
-						送信
-					</Button>
+			<Flex gap="4" justify="end">
+				<Flex justify="center">
+					<SearchForm setSearchValues={setSearchImagesData} />
 				</Flex>
 				<Flex justify="center">
 					<FileUpload />
 				</Flex>
 			</Flex>
 			{searchImagesData && searchImagesData.length > 0 && (
-				<Grid
-					columns={{
-						initial: "1",
-						md: "3",
-					}}
-					gap="4"
-					width="100%"
-					mb="5"
-					mt="5"
-				>
-					{searchImagesData.map((image) => (
-						<LgtmImage
-							key={image}
-							url={image}
-							alt=""
-							onClick={() => handleClickSearchImage(image)}
-						/>
-					))}
-				</Grid>
+				<>
+					<Heading>画像検索結果からLGTM画像の生成</Heading>
+					<Grid
+						columns={{
+							initial: "1",
+							md: "3",
+						}}
+						gap="4"
+						width="100%"
+						mb="9"
+						mt="5"
+					>
+						{searchImagesData.map((image) => (
+							<LgtmImage
+								key={image}
+								url={image}
+								alt=""
+								onClick={() => handleClickSearchImage(image)}
+							/>
+						))}
+					</Grid>
+					<Separator size="4" color="teal" />
+				</>
 			)}
 			{images && images.length > 0 ? (
 				<Grid
@@ -117,7 +92,7 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 					}}
 					gap="4"
 					width="100%"
-					mt="5"
+					mt={searchImagesData && searchImagesData.length > 0 ? "9" : "5"}
 				>
 					{images.map(({ url, alt }) => (
 						<LgtmImage
