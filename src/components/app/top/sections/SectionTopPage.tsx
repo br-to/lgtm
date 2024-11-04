@@ -51,7 +51,14 @@ const SectionTopPage: FC<Props> = ({ images }) => {
 
 	return (
 		<Box className={styles["section-top-page"]}>
-			<Flex gap="4" justify="end">
+			<Flex
+				gap="4"
+				justify="end"
+				direction={{
+					initial: "column",
+					sm: "row",
+				}}
+			>
 				<Flex justify="center">
 					<SearchForm setSearchValues={setSearchImagesData} />
 				</Flex>
